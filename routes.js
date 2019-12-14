@@ -29,7 +29,7 @@ module.exports = function(app, db) {
         }
     })
 
-    app.get('/myapi/todos/:todoid' , (req, res) => {
+    app.get('/myapi/todos/:todoid?' , (req, res) => {
         const mycollection = db.collection('myTodoCollection')
         const todoid = req.params.todoid;
         if(todoid){ // to get specific id data
@@ -62,7 +62,7 @@ module.exports = function(app, db) {
         }
     })
 
-    app.put("/myapi/todos/:todoid" , (req, res) => {
+    app.put("/myapi/todos/:todoid?" , (req, res) => {
         const todoid = req.params.todoid;
        const body = req.body;
        if (req.params.todoid && body && (body.isCompleted!==undefined || body.isCompleted!==null))
@@ -70,7 +70,7 @@ module.exports = function(app, db) {
             const mycollection = db.collection('myTodoCollection');
             mycollection.update(
                 {_id : new ObjectId(todoid)},
-                {isCompleted:body.isCompleted}   
+                {isCompleted:body.isCompleted, caption : body.caption},  
             ).then(result => {
                 res.status(200).send({
                     message : "successfully updated",
@@ -86,7 +86,7 @@ module.exports = function(app, db) {
        }
     })
 
-    app.delete("/myapi/todos/:todoid", (req, res) => {
+    app.delete("/myapi/todos/:todoid?", (req, res) => {
         const todoid = req.params.todoid;
         const mycollection = db.collection('myTodoCollection');
         if (todoid)

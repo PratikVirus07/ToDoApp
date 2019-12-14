@@ -3,7 +3,10 @@ var myaddtodobutton = document.getElementById('myIdAddToDoButton')
 
 window.onload = async function(){
     let myAllTodos = await fetchAllTodos()
-    let todolist = myAllTodos.caption
+    let todolist = myAllTodos.data
+    console.log(todolist)
+    document.getElementById('myTodoUL').innerHTML= "";
+    todolist.forEach(createMyTodo)
 }
 
 async function fetchAllTodos(){
@@ -13,43 +16,81 @@ async function fetchAllTodos(){
     return mytododata;
 }
 
-function addToDo(){
+async function onClick(){
+    await addToDoinDB()
+    let tododataafterclick = await fetchAllTodos()
+    let tododataarray = tododataafterclick.data
+    document.getElementById('myTodoUL').innerHTML= "";
+    tododataarray.forEach(createMyTodo)
+}
+
+function createMyTodo(todo){
+    var myTodoUL = document.getElementById('myTodoUL');
+
+    var li = document.createElement('li');
+    li.classList.add('individualTodos')
+    li.setAttribute("id", todo._id);
+    var checkBox = document.createElement('input');
+    checkBox.setAttribute('type', 'checkbox') 
+    checkBox.classList.add("checkboxclass")
+
+    var mytodotext = document.createElement("div");
+    mytodotext.classList.add("todotextsclass")
+    mytodotext.innerHTML = todo.caption;
+
+    var update = document.createElement("button");
+    update.setAttribute('onClick', 'UpdateMyTodo()');
+    update.classList.add("updateButton");
+    update.innerHTML = "Update";
+
+    var del = document.createElement("button");
+    del.setAttribute('onClick', 'deleteMyTodo()');
+    del.classList.add("crossButton");
+    del.innerHTML = "Delete";
+
+    li.appendChild(checkBox);
+    li.appendChild(mytodotext);
+    li.appendChild(update);
+    li.appendChild(del);
+    myTodoUL.appendChild(li);
+    document.getElementById("todotasks").appendChild(myTodoUL);
+}
+
+
+async function addToDoinDB(){
     var myCaption = myText.value;
     myText.value=""
     console.log(myCaption)
-    var data = JSON.stringify({
+    let captiontobeposted = JSON.stringify({
         "caption": myCaption
       });
-      console.log(data)
 
-    var xhr = new XMLHttpRequest();
-    //xhr.withCredentials = true;
-  
-    xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-        console.log(this.responseText);
-        }
-    });
- 
-    xhr.open("POST", "http://localhost:5555/api/todos");
-    xhr.setRequestHeader("Content-Type", "application/json");  
-    xhr.send(data);
+      let res = await fetch("http://127.0.0.1:80/myapi/todos/", {
+         method : "POST",
+         body:captiontobeposted,
+         headers : {
+            "Content-Type": "application/json"
+         } 
+      })
 
-    addToDom(myCaption)
-
+      let jsondata = await (res.json)
 }
 
-function addToDom(myCaption){
-    var ultodolists = document.getElementById("todolist")
-    ultodolists.style.display = "block"
-    var li = document.createElement('li')
-    var checkBox = document.createElement('input')
-    checkBox.type = "checkbox"
-    checkBox.value = "value"
-    checkBox.style.margin = '2px';
-    var textLi = myCaption;
-    li.append(checkBox)
-    li.append ( textLi)
-    var todoUL = document.getElementById('todoUL')
-    todoUL.appendChild(li); 
+async function deleteMyTodo(){
+    let mytodo = event.target.parentNode;
+    console.log(mytodo.id)
+    let todoIdtobedeleted = mytodo.id;
+    let res = await fetch("http://127.0.0.1:80/myapi/todos/"+todoIdtobedeleted, {
+         method : "DELETE",
+         headers : {
+            "Content-Type": "application/json"
+         } 
+      })
+
+      let myAllTodos = await fetchAllTodos()
+    let todolist = myAllTodos.data
+    console.log(todolist)
+    document.getElementById('myTodoUL').innerHTML= "";
+    todolist.forEach(createMyTodo)
+    
 }
