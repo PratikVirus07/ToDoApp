@@ -1,0 +1,36 @@
+:root{
+    font-size:16px
+}
+body{
+    background-color: #4dd599;
+}
+.todo-banner{
+    border: 1px solid grey;
+    border-radius:20px;
+    background-color: #fa697c;
+    width:40vw;
+    margin:5vh 20vw;
+    text-align:center;
+}
+.myinput-field{
+    width:70%;
+    margin:5px auto;
+}
+.myAddToDoButton{
+    background-color: #36b5b0;
+    margin: 20px auto;
+    font-size:1.5rem
+}
+#todolist{
+    border:1px solid #9b45e4;
+    border-radius: 25px;
+    background-color: #9b45e4;
+    width:35vw;
+    margin:5vh auto;
+    display: none;
+}
+#todoUL{
+    color:white;
+    font-size: 2rem;
+    list-style-type: none;
+}
