@@ -21,6 +21,13 @@ body{
     margin: 20px auto;
     font-size:1.5rem
 }
+
+.textNotes{
+    border:1px solid red;
+    width: 70%;
+    margin: 5px auto;
+}
+
 #todotasks{
     width:75vw;
     margin:  auto;

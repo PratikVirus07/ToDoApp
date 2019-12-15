@@ -39,7 +39,7 @@ function createMyTodo(todo){
     mytodotext.innerHTML = todo.caption;
 
     var update = document.createElement("button");
-    update.setAttribute('onClick', 'UpdateMyTodo()');
+    update.setAttribute('onClick', 'updateMyTodo()');
     update.classList.add("updateButton");
     update.innerHTML = "Update";
 
@@ -74,6 +74,30 @@ async function addToDoinDB(){
       })
 
       let jsondata = await (res.json)
+}
+
+async function updateMyTodo(){
+    var myCaption = myText.value;
+    myText.value=""
+    console.log(myCaption)
+    let captiontobeput = JSON.stringify({
+        "caption": myCaption
+      });
+    let mytodo = event.target.parentNode;
+    console.log(mytodo.id)
+    let todoIdtobeupdated = mytodo.id;
+    let res = await fetch("http://127.0.0.1:80/myapi/todos/"+todoIdtobeupdated, {
+         method : "PUT",
+         body:captiontobeput,
+         headers : {
+            "Content-Type": "application/json"
+         } 
+      })
+      let myAllTodos = await fetchAllTodos()
+    let todolist = myAllTodos.data
+    console.log(todolist)
+    document.getElementById('myTodoUL').innerHTML= "";
+    todolist.forEach(createMyTodo)
 }
 
 async function deleteMyTodo(){
