@@ -1,7 +1,7 @@
 var myText = document.getElementById('myText')
 var myaddtodobutton = document.getElementById('myIdAddToDoButton')
 
-var myhosturl = "https://stormy-hamlet-83070.herokuapp.com/myapi/todos/"
+var myhosturl = "https://evening-everglades-23712.herokuapp.com/"
 window.onload = async function(){
     let myAllTodos = await fetchAllTodos()
     let todolist = myAllTodos.data

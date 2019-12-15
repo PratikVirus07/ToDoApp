@@ -5,7 +5,7 @@ const mongoclient = mongodb.MongoClient
 const routes = require('./routes.js')
 //const host = '127.0.0.1'
 //const port = 80
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 7777;
 
 
 const db_uri = 'mongodb+srv://Pratik:test123@todocluster-nhuna.mongodb.net/test?retryWrites=true&w=majority'
