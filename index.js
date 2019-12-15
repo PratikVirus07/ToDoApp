@@ -3,8 +3,10 @@ const app = express();
 const mongodb = require("mongodb");
 const mongoclient = mongodb.MongoClient
 const routes = require('./routes.js')
-const host = '127.0.0.1'
-const port = 80
+//const host = '127.0.0.1'
+//const port = 80
+const port = process.env.PORT || 3000;
+
 
 const db_uri = 'mongodb+srv://Pratik:test123@todocluster-nhuna.mongodb.net/test?retryWrites=true&w=majority'
 
@@ -25,8 +27,11 @@ mongoclient.connect(db_uri, (error, dbClient) => {
     console.log("connection succesful with mongodb");
     const mydatabase = dbClient.db("myTodoDb")
     routes(app, mydatabase)
-        app.listen(port, host, () => {
-            console.log(`Your server is Up and running with https://${host}:${port}`);
+        // app.listen(port, host, () => {
+        //     console.log(`Your server is Up and running with https://${host}:${port}`);
+        // })
+        app.listen(port,()=>{ // heroku
+            console.log(`Listening on ${port}`);
         })
     })
 

@@ -1,6 +1,7 @@
 var myText = document.getElementById('myText')
 var myaddtodobutton = document.getElementById('myIdAddToDoButton')
 
+var myhosturl = "https://stormy-hamlet-83070.herokuapp.com/myapi/todos/"
 window.onload = async function(){
     let myAllTodos = await fetchAllTodos()
     let todolist = myAllTodos.data
@@ -10,7 +11,7 @@ window.onload = async function(){
 }
 
 async function fetchAllTodos(){
-    let result = await fetch("http://127.0.0.1:80/myapi/todos");
+    let result = await fetch(myhosturl);
     let mytododata = await result.json();
     console.log(mytododata)
     return mytododata;
@@ -65,7 +66,7 @@ async function addToDoinDB(){
         "caption": myCaption
       });
 
-      let res = await fetch("http://127.0.0.1:80/myapi/todos/", {
+      let res = await fetch(myhosturl, {
          method : "POST",
          body:captiontobeposted,
          headers : {
@@ -86,7 +87,7 @@ async function updateMyTodo(){
     let mytodo = event.target.parentNode;
     console.log(mytodo.id)
     let todoIdtobeupdated = mytodo.id;
-    let res = await fetch("http://127.0.0.1:80/myapi/todos/"+todoIdtobeupdated, {
+    let res = await fetch(myhosturl+todoIdtobeupdated, {
          method : "PUT",
          body:captiontobeput,
          headers : {
@@ -104,7 +105,7 @@ async function deleteMyTodo(){
     let mytodo = event.target.parentNode;
     console.log(mytodo.id)
     let todoIdtobedeleted = mytodo.id;
-    let res = await fetch("http://127.0.0.1:80/myapi/todos/"+todoIdtobedeleted, {
+    let res = await fetch(myhosturl+todoIdtobedeleted, {
          method : "DELETE",
          headers : {
             "Content-Type": "application/json"
